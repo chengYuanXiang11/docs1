@@ -17,7 +17,7 @@
             "group": "Get Started",
             "pages": [
               "introduction",
-              "development"
+              "quickstart"
             ]
           }
         ]
@@ -46,13 +46,13 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:support@autocoder.cc"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "href": "https://koudingvip.com/"
     }
   },
   "footer": {
