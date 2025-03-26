@@ -7,6 +7,7 @@
     "light": "#07C983",
     "dark": "#15803D"
   },
+  "logo":"/logo.png",
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
@@ -51,14 +52,15 @@
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
+      "label": "App",
       "href": "https://koudingvip.com/"
     }
   },
   "footer": {
     "socials": {
       "x": "https://x.com/AutoCoder_hi",
-      "discord": "https://discord.gg/ZhMxhwU3",
+     "bluesky": "https://x.com/AutoCoder_hi",
+       "discord": "https://x.com/AutoCoder_hi",
     }
   }
 }
