@@ -1,7 +1,8 @@
 .eyebrow{
   opacity:0;
+  display:none;
 }
   h1{
-        font-size: 2.25rem!importamt;
-    line-height: 2.5rem!importamt;
+    font-size: 36px!importamt;
+    line-height: 40px!importamt;
   }
