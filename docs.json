@@ -21,20 +21,7 @@
 					"quickstart"
 				]
 			}]
-		}],
-		"global": {
-			"anchors": [{
-					"anchor": "Documentation",
-					"href": "https://docs.xxycyx.online/introduction",
-					"icon": "book-open-cover"
-				},
-				{
-					"anchor": "Community",
-					"href": "https://mintlify.com/community",
-					"icon": "slack"
-				}
-			]
-		}
+		}]
 	},
 	"logo": {
 		"light": "/logo_light.svg",
