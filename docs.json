@@ -1,66 +1,60 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Aicg Code",
-  "colors": {
-    "primary": "#02160f",
-    "light": "#07C983",
-    "dark": "#15803D"
-  },
-  "logo":"/logo.svg",
-  "favicon": "/favicon.svg",
-  "navigation": {
-    "tabs": [
-      {
-        "tab": "Guides",
-        "groups": [
-          {
-            "group": "Get Started",
-            "pages": [
-              "introduction",
-              "quickstart"
-            ]
-          }
-        ]
-      }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://docs.xxycyx.online/introduction",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Community",
-          "href": "https://mintlify.com/community",
-          "icon": "slack"
-        }
-      ]
-    }
-  },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:support@autocoder.cc"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "App",
-      "href": "https://koudingvip.com/"
-    }
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/AutoCoder_hi",
-     "bluesky": "https://x.com/AutoCoder_hi",
-       "discord": "https://discord.gg/ZhMxhwU3",
-    }
-  }
+	"$schema": "https://mintlify.com/docs.json",
+	"theme": "mint",
+	"name": "Aicg Code",
+	"colors": {
+		"primary": "#02160f",
+		"light": "#07C983",
+		"dark": "#15803D"
+	},
+	"favicon": {
+		"light": "/favicon.svg",
+		"dark": "/favicon.svg"
+	},
+	"navigation": {
+		"tabs": [{
+			"tab": "Guides",
+			"groups": [{
+				"group": "Get Started",
+				"pages": [
+					"introduction",
+					"quickstart"
+				]
+			}]
+		}],
+		"global": {
+			"anchors": [{
+					"anchor": "Documentation",
+					"href": "https://docs.xxycyx.online/introduction",
+					"icon": "book-open-cover"
+				},
+				{
+					"anchor": "Community",
+					"href": "https://mintlify.com/community",
+					"icon": "slack"
+				}
+			]
+		}
+	},
+	"logo": {
+		"light": "/logo.svg",
+		"dark": "/logo.svg"
+	},
+	"navbar": {
+		"links": [{
+			"label": "Support",
+			"href": "mailto:support@autocoder.cc"
+		}],
+		"primary": {
+			"type": "button",
+			"label": "App",
+			"href": "https://koudingvip.com/"
+		}
+	},
+	"footer": {
+		"socials": {
+			"x": "https://x.com/AutoCoder_hi",
+			"discord": "https://discord.gg/ZhMxhwU3"
+		}
+	}
 }
