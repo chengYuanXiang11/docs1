@@ -7,7 +7,10 @@
     line-height: 40px!important;
     padding-bottom:20px;
   }
-.group{
+.bg-primary\/10 {
+  background:#50505014!important;
+}
+.bg-primary{
   background:#50505014!important;
 }
 .group:hover{
