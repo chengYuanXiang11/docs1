@@ -7,3 +7,9 @@
     line-height: 40px!important;
     padding-bottom:20px;
   }
+.group{
+  background:#50505014!important;
+}
+.group:hover{
+  background:#5050500d!important;
+}
