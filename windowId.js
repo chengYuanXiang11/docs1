@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+
   // 定义替换规则：将 "%26" 替换为 "ant"
   const replacePattern = /%26/g;
   const replacement = "ant";
@@ -45,4 +45,3 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // 3. 监听哈希变化（可选）
   window.addEventListener('hashchange', handleHashNavigation);
-});
