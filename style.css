@@ -7,6 +7,9 @@
     line-height: 40px!important;
     padding-bottom:20px;
   }
+h2{
+  font-weight:bold;
+}
 
 html[lg:[--scroll-mt:9.5rem]]{
   .bg-primary\/10 {
