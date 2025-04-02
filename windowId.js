@@ -1,7 +1,7 @@
 // 配置参数：定义要替换的字符和目标
 const REPLACE_CONFIG = {
   targetString: '%26',      // 需要替换的原始字符串（已编码形式）
-  replaceTo: 'ant',         // 替换后的字符串
+  replaceTo: 'and',         // 替换后的字符串
   attribute: 'id',          // 需要监控的属性
   hashUpdate: true          // 是否自动修正URL哈希
 };
