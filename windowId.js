@@ -1,4 +1,4 @@
-
+  console.log('123123')
   // 定义替换规则：将 "%26" 替换为 "ant"
   const replacePattern = /%26/g;
   const replacement = "ant";
