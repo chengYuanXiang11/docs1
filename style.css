@@ -40,7 +40,7 @@ html[lg:[--scroll-mt:9.5rem]]{
     background:#fff!important;
         border-radius: 8px!important;
   }
-  text-white{
+  .text-white{
     color:#02160F!important;
   }
   svg{
