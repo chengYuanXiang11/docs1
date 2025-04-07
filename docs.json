@@ -1,5 +1,5 @@
 {
-	"$schema": "https://mintlify.com/docs.json",
+	"$schema": "https://mintlify.com/schema.json",
 	"theme": "mint",
 	"name": "Aicg Code",
 	"colors": {
