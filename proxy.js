@@ -58,7 +58,7 @@ The platform provides all the tools you need to create amazing websites, front-e
   <Card title="Tutorial" href="https://docs.koudingvip.com/introduction">
     Preview your changes before you push to make sure they're perfect
   </Card>
-</CardGroup>`
+</CardGroup>`;
 
         // == 核心拦截器 ==
         (function () {
