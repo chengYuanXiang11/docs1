@@ -249,9 +249,10 @@ function generateUUID() {
 
 class MDX_CLASS {
     constructor() {
-        this.search = throttle(this._searchCore.bind(this)); // 包装核心方法
+        this.search = throttle(this._searchCore.bind(this), 500)
+
     }
-    search(query) {
+    async _searchCore(query) {
        // 1. 缓存检查
        const cacheKey = `search_${query}`;
        const cached = searchCache.get(cacheKey);
