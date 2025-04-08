@@ -252,7 +252,7 @@ class MDX_CLASS {
         this.search = throttle(this._searchCore.bind(this), 500)
 
     }
-    async _searchCore(query) {
+     _searchCore(query) {
        // 1. 缓存检查
        const cacheKey = `search_${query}`;
        const cached = searchCache.get(cacheKey);
@@ -373,66 +373,37 @@ const INTERCEPT_URL = "https://api.mintlifytrieve.com/api/chunk/autocomplete";
 // ==================== Fetch 拦截器 ====================
 (function () {
     const originalFetch = window.fetch;
-    const activeRequests = new Map(); // 请求去重
+    const fuse = new MDX_CLASS();
 
     window.fetch = async function (url, init) {
         // if (url !== INTERCEPT_URL) return originalFetch(url, init);
 
-        // if (typeof url === 'string' && url === INTERCEPT_URL) {
-        //     console.log('拦截2', url)
+        if (typeof url === 'string' && url === INTERCEPT_URL) {
+            try {
+                const response = await originalFetch(url, init);
+                const clone = response.clone();
+                const body = init?.body ? JSON.parse(init.body) : {};
+                const query = body.query || '';
 
-        //     try {
-        //         const response = await originalFetch(url, init);
-        //         const clone = response.clone();
-        //         const body = init?.body ? JSON.parse(init.body) : {};
-        //         const query = body.query || '';
-
-        //         // 处理数据逻辑
-        //         const fuse = new MDX_CLASS();
-        //         const results = fuse.search(query);
-        //         const processedData = processResults(results);
-        //         console.log(processedData)
+                // 处理数据逻辑
+                const results = fuse.search(query);
+                const processedData = processResults(results);
+                console.log(processedData)
 
 
 
-        //         return new Response(JSON.stringify(processedData), {
-        //             status: 200,
-        //             headers: response.headers
-        //         });
-        //     } catch (e) {
-        //         console.warn('Fetch处理失败:', e);
-        //         return originalFetch(url, init);
-        //     }
-        // }
-        // return originalFetch(url, init);
-        if (url !== INTERCEPT_URL) return originalFetch(url, init);
-
-        try {
-            const body = init?.body ? JSON.parse(init.body) : {};
-            const query = body.query || '';
-            
-            // 1. 请求去重
-            const requestKey = `req_${query}`;
-            if (activeRequests.has(requestKey)) {
-                return activeRequests.get(requestKey);
+                return new Response(JSON.stringify(processedData), {
+                    status: 200,
+                    headers: response.headers
+                });
+            } catch (e) {
+                console.warn('Fetch处理失败:', e);
+                return originalFetch(url, init);
             }
-
-            // 2. 创建新请求
-            const fetchPromise = (async () => {
-                const fuse = new MDX_CLASS();
-                const results = await fuse.search(query);
-                return processResults(results);
-            })();
-
-            // 3. 注册并清理
-            activeRequests.set(requestKey, fetchPromise);
-            fetchPromise.finally(() => activeRequests.delete(requestKey));
-            
-            return fetchPromise;
-
-        } catch (e) {
-            console.warn('Fetch处理失败:', e);
-            return originalFetch(url, init);
         }
+        return originalFetch(url, init);
+
+
+         
     };
 })();
