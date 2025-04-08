@@ -317,6 +317,7 @@ const INTERCEPT_URL = "https://api.mintlifytrieve.com/api/chunk/autocomplete";
         // 添加响应拦截逻辑
         const originalOnReadyStateChange = xhr.onreadystatechange;
         xhr.addEventListener('readystatechange', function() {
+          console.log('拦截',xhr)
             if (xhr.readyState === 4 && xhr._url === INTERCEPT_URL) {
                 try {
                     const originData = JSON.parse(xhr.responseText);
@@ -348,6 +349,8 @@ const INTERCEPT_URL = "https://api.mintlifytrieve.com/api/chunk/autocomplete";
     
     window.fetch = async function(url, init) {
         if (typeof url === 'string' && url === INTERCEPT_URL) {
+          console.log('拦截',url)
+          
             try {
                 const response = await originalFetch(url, init);
                 const clone = response.clone();
