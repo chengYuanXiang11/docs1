@@ -283,6 +283,7 @@ total_chunk_pages
 0.3603987693786621,
         highlights: [v.description],
         metadata: [{
+                              "link": "introduction",
             id: generateUUID(),
             chunk_html: v.description,
             dataset_id: "592bca4c-7f00-4cc2-93c5-62339712a05f",
