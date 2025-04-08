@@ -278,6 +278,9 @@
 total_chunk_pages
 : 0,
         score_chunks:results.map(v => ({
+          score
+: 
+0.3603987693786621,
         highlights: [v.description],
         metadata: [{
             id: generateUUID(),
@@ -299,49 +302,6 @@ total_chunk_pages
 }
         // 定义需要拦截的API地址常量
 const INTERCEPT_URL = "https://api.mintlifytrieve.com/api/chunk/autocomplete";
-
-// ==================== XMLHttpRequest 拦截器 ====================
-(function() {
-    const originalXHROpen = XMLHttpRequest.prototype.open;
-    const originalXHRSend = XMLHttpRequest.prototype.send;
-
-    XMLHttpRequest.prototype.open = function(method, url) {
-        this._url = url; // 存储请求URL用于后续判断
-        return originalXHROpen.apply(this, arguments);
-    };
-
-    XMLHttpRequest.prototype.send = function(body) {
-        const xhr = this;
-        this._body = body; // 存储请求体
-        
-        // 添加响应拦截逻辑
-        const originalOnReadyStateChange = xhr.onreadystatechange;
-        xhr.addEventListener('readystatechange', function() {
-          console.log('拦截1',xhr)
-            if (xhr.readyState === 4 && xhr._url === INTERCEPT_URL) {
-                try {
-                    const originData = JSON.parse(xhr.responseText);
-                    const query = JSON.parse(body).query || '';
-                    
-                    // 处理数据逻辑
-                    const fuse = new MDX_CLASS();
-                    const results = fuse.search(query);
-                    const processedData = processResults(results);
-                    
-                    // 重写响应内容
-                    Object.defineProperty(xhr, 'responseText', {
-                        value: JSON.stringify(processedData)
-                    });
-                } catch (e) {
-                    console.warn('XHR处理失败:', e);
-                }
-            }
-            originalOnReadyStateChange?.call(xhr);
-        });
-        
-        return originalXHRSend.apply(this, arguments);
-    };
-})();
 
 // ==================== Fetch 拦截器 ====================
 (function() {
