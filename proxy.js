@@ -151,10 +151,24 @@ const MDX_COMPONENTS = [
             `Refunds are available under the following conditions:`,
             ` - The service must be purchased directly through our website.`,
             `- Refund requests must be submitted within 7 days of the service purchase date.`,
-            `Must I subscribe to a Sub plan before purchasing a Pro plan?`,
-            `Yes, Pro plans require an active subscription to a Sub plan. We offer enhanced benefits for subscribers, including additional perks when token usage is low.`,
-            `Can I downgrade after upgrading?`,
-            ` At this time, downgrading is not supported. We recommend carefully considering your usage requirements prior to upgrading.`
+            `Non-Refundable Services`,
+            `No refunds are available for services that have already been used.`,
+            `Refund Amount.`,
+            `Refunds may incur a processing fee, depending on the applicable charge standards.`,
+            `Refund Delays or Issues`,
+            `- Refunds will be issued to the original payment method.`,
+            `- For expired or canceled cards, the refund will be processed by your card issuer. If you haven't received your refund, please check your bank account, then contact your credit card company or bank. Refunds may take some time to process. If you've done this and still haven't received your refund, please contact us at [support@autocoder.cc](mailto:support@autocoder.cc).`,
+            `Changes to This Policy`,
+            ` We reserve the right to update or modify this refund and return policy at any time. Any changes will be posted on this page and will take effect immediately.`,
+            `Contact Us`,
+            `If you have any questions about our refund policy, please contact us via email at [support@autocoder.cc](mailto:support@autocoder.cc).`,
+
+
+
+
+
+
+
         ]
     },
 
@@ -184,9 +198,9 @@ class SearchCache {
             const oldestKey = this.memoryCache.keys().next().value;
             this.memoryCache.delete(oldestKey);
         }
-        this.memoryCache.set(key, { 
-            data, 
-            timestamp: Date.now() 
+        this.memoryCache.set(key, {
+            data,
+            timestamp: Date.now()
         });
         // 可选：同步到localStorage
         try {
@@ -197,7 +211,7 @@ class SearchCache {
 const searchCache = new SearchCache();
 function throttle(func, delay = 500) {
     let lastExec = 0;
-    return function(...args) {
+    return function (...args) {
         const now = Date.now();
         if (now - lastExec < delay) return;
         lastExec = now;
@@ -252,16 +266,16 @@ class MDX_CLASS {
         this.search = throttle(this._searchCore.bind(this), 500)
 
     }
-     _searchCore(query) {
-       // 1. 缓存检查
-       const cacheKey = `search_${query}`;
-       const cached = searchCache.get(cacheKey);
-       if (cached) return cached;
+    _searchCore(query) {
+        // 1. 缓存检查
+        const cacheKey = `search_${query}`;
+        const cached = searchCache.get(cacheKey);
+        if (cached) return cached;
 
-       // 2. 实际搜索逻辑
-       const results = [];
-       const normalizedQuery = query.toLowerCase().trim();
-       if (!normalizedQuery) return results;
+        // 2. 实际搜索逻辑
+        const results = [];
+        const normalizedQuery = query.toLowerCase().trim();
+        if (!normalizedQuery) return results;
 
         for (const component of MDX_COMPONENTS) {
             const content = component.description || component.content || [];
@@ -404,6 +418,6 @@ const INTERCEPT_URL = "https://api.mintlifytrieve.com/api/chunk/autocomplete";
         return originalFetch(url, init);
 
 
-         
+
     };
 })();
