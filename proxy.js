@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script>
-        const MDX_COMPONENTS = [
+  const MDX_COMPONENTS = [
             {
                 page: '/introduction',
                 title: '👋 Welcome',
@@ -303,7 +294,7 @@ total_chunk_pages
                     null,
                     updated_at: "2025-04-07T08:06:23.335830",weight: 0,
         }]
-    }));
+    }))
     }
 }
         // 定义需要拦截的API地址常量
@@ -380,13 +371,3 @@ const INTERCEPT_URL = "https://api.mintlifytrieve.com/api/chunk/autocomplete";
         return originalFetch(url, init);
     };
 })();
-
-    </script>
-
-</head>
-
-<body>
-
-</body>
-
-</html>
