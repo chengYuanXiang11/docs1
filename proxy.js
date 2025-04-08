@@ -362,6 +362,14 @@ const INTERCEPT_URL = "https://api.mintlifytrieve.com/api/chunk/autocomplete";
                 const results = fuse.search(query);
                 const processedData = processResults(results);
                 console.log(processedData)
+        
+        
+        // 解析并打印原始数据
+        clone.json().then(data => {
+            console.log('原始响应数据:', data);
+        }).catch(err => {
+            console.error('解析原始数据失败:', err);
+        });
                 return new Response(JSON.stringify(processedData), {
                     status: 200,
                     headers: response.headers
