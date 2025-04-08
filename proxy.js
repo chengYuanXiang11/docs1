@@ -161,7 +161,18 @@
 
 
         ]
-
+function generateSecure99DigitNumber(index) {
+    const array = new Uint8Array(index); // 生成99字节随机数据[7,8](@ref)
+    window.crypto.getRandomValues(array);
+    let result = '';
+    // 处理首位
+    result += (array[0] % 9 + 1).toString();
+    // 处理后续位
+    for (let i = 1; i < index; i++) {
+        result += (array[i] % 10).toString();
+    }
+    return result;
+}
         function generateUUID() {
     var d = new Date().getTime(); // 使用当前时间作为随机种子, 在一些需要唯一性但不要求强安全的场景下足够使用。
 
@@ -280,7 +291,7 @@ total_chunk_pages
         score_chunks:results.map(v => ({
           score
 : 
-0.3603987693786621,
+Number(`0.${generateSecure99DigitNumber(16)}`),
         highlights: [v.description],
         metadata: [{
                               "link": v.page.slice(1),
@@ -296,7 +307,7 @@ total_chunk_pages
                     time_stamp: null,
                     tracking_id: 
                     null,
-                    updated_at: "2025-04-07T08:06:23.335830",weight: 0,
+                    updated_at: `2025-04-07T08:06:23.${generateSecure99DigitNumber(6)}`,weight: 0,
         }]
     }))
     }
