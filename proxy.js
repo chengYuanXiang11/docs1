@@ -1,4 +1,13 @@
-     const MDX_COMPONENTS = [
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        const MDX_COMPONENTS = [
             {
                 page: '/introduction',
                 title: '👋 Welcome',
@@ -273,7 +282,11 @@
 
         function processResults(results) {
             
-    return results.map(v => ({
+    return {
+        corrected_query:null,
+total_chunk_pages
+: 0,
+        score_chunks:results.map(v => ({
         highlights: [v.description],
         metadata: [{
             id: generateUUID(),
@@ -291,6 +304,7 @@
                     updated_at: "2025-04-07T08:06:23.335830",weight: 0,
         }]
     }));
+    }
 }
         // 定义需要拦截的API地址常量
 const INTERCEPT_URL = "https://api.mintlifytrieve.com/api/chunk/autocomplete";
@@ -366,3 +380,13 @@ const INTERCEPT_URL = "https://api.mintlifytrieve.com/api/chunk/autocomplete";
         return originalFetch(url, init);
     };
 })();
+
+    </script>
+
+</head>
+
+<body>
+
+</body>
+
+</html>
