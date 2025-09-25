@@ -108,6 +108,12 @@ const REPLACE_CONFIG = {
         // 是否显示弹窗提示
         showAlert: true,
         
+        // 是否启用协议检测（如果为false，将直接打开链接而不检测）
+        enableDetection: true,
+        
+        // 常见协议列表（这些协议将直接打开，不进行检测）
+        commonProtocols: ['mailto:', 'tel:', 'sms:'],
+        
         // 自定义提示消息
         alertMessages: {
             mailto: '无法打开邮件客户端，请检查是否安装了邮件应用程序。',
@@ -185,44 +191,104 @@ const REPLACE_CONFIG = {
     }
     
     // 检测协议支持情况
-    function detectProtocolSupport(protocol) {
+    function detectProtocolSupport(protocol, originalHref) {
         return new Promise((resolve) => {
-            const testElement = document.createElement('a');
-            testElement.href = protocol + 'test';
+            // 对于某些协议，我们采用更宽松的检测策略
+            const lenientProtocols = ['mailto:', 'tel:', 'sms:'];
+            const isLenient = lenientProtocols.includes(protocol);
             
-            // 尝试触发协议
-            const startTime = Date.now();
-            let hasNavigated = false;
-            
-            // 监听页面可见性变化
-            const visibilityHandler = () => {
-                if (document.visibilityState === 'hidden') {
-                    hasNavigated = true;
-                }
-            };
-            
-            document.addEventListener('visibilitychange', visibilityHandler);
-            
-            // 尝试打开链接
-            try {
-                testElement.click();
-            } catch (e) {
-                log('协议检测出错:', e);
-                resolve(false);
-                return;
-            }
-            
-            // 设置检测超时
-            setTimeout(() => {
-                document.removeEventListener('visibilitychange', visibilityHandler);
+            if (isLenient) {
+                // 对于邮件、电话、短信等常见协议，我们假设它们被支持
+                // 只有在明确失败时才显示错误
+                log(`使用宽松检测策略处理协议: ${protocol}`);
                 
-                // 检查是否发生了导航
-                if (hasNavigated || document.visibilityState === 'hidden') {
-                    resolve(true);
-                } else {
+                // 创建一个隐藏的测试元素
+                const testElement = document.createElement('a');
+                testElement.href = originalHref;
+                testElement.style.display = 'none';
+                document.body.appendChild(testElement);
+                
+                // 记录开始时间
+                const startTime = Date.now();
+                let hasError = false;
+                
+                // 尝试打开链接
+                try {
+                    // 使用setTimeout来异步执行，避免阻塞
+                    setTimeout(() => {
+                        try {
+                            testElement.click();
+                            
+                            // 对于宽松协议，我们给一个很短的检测时间
+                            // 如果没有立即出错，就认为成功
+                            setTimeout(() => {
+                                document.body.removeChild(testElement);
+                                if (!hasError) {
+                                    log(`协议 ${protocol} 检测成功`);
+                                    resolve(true);
+                                } else {
+                                    log(`协议 ${protocol} 检测失败`);
+                                    resolve(false);
+                                }
+                            }, 100);
+                            
+                        } catch (e) {
+                            hasError = true;
+                            log('协议检测出错:', e);
+                            document.body.removeChild(testElement);
+                            resolve(false);
+                        }
+                    }, 0);
+                    
+                } catch (e) {
+                    hasError = true;
+                    log('协议检测出错:', e);
+                    document.body.removeChild(testElement);
                     resolve(false);
                 }
-            }, CONFIG.detectionTimeout);
+                
+            } else {
+                // 对于其他协议，使用原来的检测方法
+                log(`使用严格检测策略处理协议: ${protocol}`);
+                
+                const testElement = document.createElement('a');
+                testElement.href = protocol + 'test';
+                
+                let hasNavigated = false;
+                let hasError = false;
+                
+                // 监听页面可见性变化
+                const visibilityHandler = () => {
+                    if (document.visibilityState === 'hidden') {
+                        hasNavigated = true;
+                    }
+                };
+                
+                document.addEventListener('visibilitychange', visibilityHandler);
+                
+                // 尝试打开链接
+                try {
+                    testElement.click();
+                } catch (e) {
+                    hasError = true;
+                    log('协议检测出错:', e);
+                    document.removeEventListener('visibilitychange', visibilityHandler);
+                    resolve(false);
+                    return;
+                }
+                
+                // 设置检测超时
+                setTimeout(() => {
+                    document.removeEventListener('visibilitychange', visibilityHandler);
+                    
+                    // 检查是否发生了导航
+                    if (hasNavigated || document.visibilityState === 'hidden') {
+                        resolve(true);
+                    } else {
+                        resolve(false);
+                    }
+                }, CONFIG.detectionTimeout);
+            }
         });
     }
     
@@ -233,34 +299,58 @@ const REPLACE_CONFIG = {
         const protocol = href.split(':')[0] + ':';
         log(`处理非正式协议链接: ${href}`);
         
-        // 记录原始链接
-        const originalHref = link.href;
-        
         // 添加视觉反馈
         link.style.opacity = '0.7';
         link.style.cursor = 'wait';
         
-        try {
-            // 检测协议支持
-            const isSupported = await detectProtocolSupport(protocol);
+        // 检查是否为常见协议或是否禁用检测
+        const isCommonProtocol = CONFIG.commonProtocols.includes(protocol);
+        const shouldSkipDetection = !CONFIG.enableDetection || isCommonProtocol;
+        
+        if (shouldSkipDetection) {
+            log(`直接打开链接 (协议: ${protocol}, 检测禁用: ${!CONFIG.enableDetection}, 常见协议: ${isCommonProtocol})`);
             
-            if (isSupported) {
-                log(`协议 ${protocol} 支持，尝试打开`);
-                // 协议支持，尝试打开
+            try {
+                // 直接尝试打开链接
                 window.location.href = href;
-            } else {
-                log(`协议 ${protocol} 不支持，显示提示`);
+                
+                // 给一个很短的延迟，然后恢复样式
+                setTimeout(() => {
+                    link.style.opacity = '';
+                    link.style.cursor = '';
+                }, 300);
+                
+            } catch (error) {
+                log('打开链接时出错:', error);
                 showAlert(null, protocol.replace(':', ''));
-            }
-        } catch (error) {
-            log('处理链接时出错:', error);
-            showAlert(null, protocol.replace(':', ''));
-        } finally {
-            // 恢复链接样式
-            setTimeout(() => {
+                
+                // 恢复链接样式
                 link.style.opacity = '';
                 link.style.cursor = '';
-            }, 500);
+            }
+        } else {
+            // 对于其他协议，使用检测机制
+            log(`使用检测机制处理协议: ${protocol}`);
+            try {
+                const isSupported = await detectProtocolSupport(protocol, href);
+                
+                if (isSupported) {
+                    log(`协议 ${protocol} 支持，尝试打开`);
+                    window.location.href = href;
+                } else {
+                    log(`协议 ${protocol} 不支持，显示提示`);
+                    showAlert(null, protocol.replace(':', ''));
+                }
+            } catch (error) {
+                log('处理链接时出错:', error);
+                showAlert(null, protocol.replace(':', ''));
+            } finally {
+                // 恢复链接样式
+                setTimeout(() => {
+                    link.style.opacity = '';
+                    link.style.cursor = '';
+                }, 500);
+            }
         }
     }
     
