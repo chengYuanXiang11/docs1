@@ -103,7 +103,7 @@ const REPLACE_CONFIG = {
         detectionTimeout: 1500,
         
         // 是否启用控制台日志
-        enableLogging: false,
+        enableLogging: true,
         
         // 是否显示弹窗提示
         showAlert: true,
@@ -111,8 +111,7 @@ const REPLACE_CONFIG = {
         // 是否启用协议检测（如果为false，将直接打开链接而不检测）
         enableDetection: true,
         
-        commonProtocols: [],
-        
+        commonProtocols: ['mailto:', 'tel:', 'sms:'],        
         // 自定义提示消息
         alertMessages: {
             mailto: '无法打开邮件客户端，请检查是否安装了邮件应用程序。',
