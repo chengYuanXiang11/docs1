@@ -103,7 +103,7 @@ const REPLACE_CONFIG = {
         detectionTimeout: 1500,
         
         // 是否启用控制台日志
-        enableLogging: true,
+        enableLogging: false,
         
         // 是否显示弹窗提示
         showAlert: true,
@@ -111,8 +111,7 @@ const REPLACE_CONFIG = {
         // 是否启用协议检测（如果为false，将直接打开链接而不检测）
         enableDetection: true,
         
-        // 常见协议列表（这些协议将直接打开，不进行检测）
-        commonProtocols: ['mailto:', 'tel:', 'sms:'],
+        commonProtocols: [],
         
         // 自定义提示消息
         alertMessages: {
